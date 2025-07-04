@@ -167,7 +167,7 @@
   </div>
 
   <div class="page" id="page3">
-    <h2 class="title">🎂 HAPPY BIRTHDAY! WISHING YOU A DAY FILLED WITH JOY, LAUGHTER, AND EVERYTHING THAT MAKES YOU HAPPY 🎂</h2>
+    <h2 class="title">🎂 HAPPY HAPPY HAPPY BIRTHDAY 🎂</h2>
     <div id="blessing-box" style="max-width: 600px; margin: auto;"></div>
   </div>
 
@@ -182,7 +182,50 @@
       document.getElementById('music-toggle').textContent = isMuted ? '🔇 Bật nhạc' : '🔊 Tắt nhạc';
     }
 
-    const storedBlessings = [
+    function updateCountdown() {
+      const targetDate = new Date('2025-07-06T00:00:00').getTime();
+      const cd = document.getElementById("countdown");
+      const interval = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+        if (distance <= 0) {
+          clearInterval(interval);
+          cd.textContent = "🎉 Hết giờ! Nhấn để bắt đầu 🎉";
+          cd.onclick = () => nextPage(1);
+          cd.style.cursor = "pointer";
+        } else {
+          const minutes = Math.floor(distance / 60000);
+          const seconds = Math.floor((distance % 60000) / 1000);
+          cd.textContent = `${minutes}m ${seconds}s`;
+        }
+      }, 1000);
+    }
+    updateCountdown();
+
+    const teaseLines = [
+      "😏 Hnhu bị lỗi rồi đó, tiếp đi 😏",
+      "🙄 Thấy cũng cũng rồi đó, chắc do non tay load hơi lâu 🙄",
+      "😝 Ơ còn à, chắc lần cuối rồi đó,  chắc chắn😝",
+      "🤭 Hãy sống kiên nhẫn lên nèo, kiên nhẫn là tốt, là liều thuốc cho sức khỏe và tinh thần chạy deadline 🤭",
+      "🥳 Roài thôi không thách thức nữa, để chuyển qua ndung chính 🥳",
+      "🤣 Hnhu ctrinh lỗi rồi, chết rồi biết lsao đâyyyy🤣",
+      "😜 Chờ tý đi, đang sửa nốt, chắc vậy (hoặc thách thức lòng kiên nhẫn) 😜",
+      "🥰 Đến đc tận đây rồi cũng tốt đó, hê hê, ncl không đùa nữa đâu, chơi thật này",
+      "😇 Lần này legit nha, ko troll troll nữa, ko nhấn là tiếc"
+    ];
+
+    let teaseCount = 0;
+    function teaseClick() {
+      document.getElementById("teaseText").innerText = teaseLines[teaseCount];
+      teaseCount++;
+      if (teaseCount === teaseLines.length) {
+        nextPage(3);
+        startTyping();
+        playMusic();
+      }
+    }
+
+    const blessings = [
       "Hôm nay trời xanh mây trắng nắng vàng, là sn của HN🎉",
       "19 tuổi rồi đó, nhanh thế (vẫn đang tự thấy shock)💜",
       "Chúc HN thiệt nhiều niềm vui, hạnh phúc và yêu thương",
@@ -222,8 +265,8 @@
     function startTyping() {
       const box = document.getElementById("blessing-box");
       function typeLine() {
-        if (currentLine >= storedBlessings.length) return;
-        let text = storedBlessings[currentLine];
+        if (currentLine >= blessings.length) return;
+        let text = blessings[currentLine];
         let i = 0;
         const p = document.createElement("p");
         box.innerHTML = "";
@@ -243,28 +286,6 @@
       typeLine();
     }
 
-    let teaseCount = 0;
-    function teaseClick() {
-      const text = [
-        "😏 Hnhu bị lỗi rồi đó, tiếp đi 😏",
-        "🙄 Thấy cũng cũng rồi đó, chắc do non tay load hơi lâu 🙄",
-        "😝 Ơ còn à, chắc lần cuối rồi đó,  chắc chắn😝",
-        "🤭 Hãy sống kiên nhẫn lên nèo, kiên nhẫn là tốt, là liều thuốc cho sức khỏe và tinh thần chạy deadline 🤭",
-        "🥳 Roài thôi không thách thức nữa, để chuyển qua ndung chính 🥳",
-        "🤣 Hnhu ctrinh lỗi rồi, chết rồi biết lsao đâyyyy🤣",
-        "😜 Chờ tý đi, đang sửa nốt, chắc vậy (hoặc thách thức lòng kiên nhẫn) 😜",
-        "🥰 Đến đc tận đây rồi cũng tốt đó, hê hê, ncl không đùa nữa đâu, chơi thật này",
-        "😇 Lần này legit nha, ko troll troll nữa, ko nhấn là tiếc"
-      ];
-      document.getElementById("teaseText").innerText = text[teaseCount];
-      teaseCount++;
-      if (teaseCount === 9) {
-        nextPage(3);
-        startTyping();
-        playMusic();
-      }
-    }
-
     function playMusic() {
       const audio = document.getElementById('bg-music');
       audio.volume = 0;
@@ -281,28 +302,6 @@
       document.querySelectorAll('.page').forEach(p => p.classList.remove('show'));
       document.getElementById(`page${n}`).classList.add('show');
     }
-
-    function updateCountdown() {
-      const targetDate = new Date().getTime() + 60000; // 1 phút đếm ngược
-      const cd = document.getElementById("countdown");
-
-      const interval = setInterval(() => {
-        const now = new Date().getTime();
-        const distance = targetDate - now;
-        if (distance <= 0) {
-          clearInterval(interval);
-          cd.textContent = "🎉 Hết giờ! Nhấn để bắt đầu 🎉";
-          cd.onclick = () => nextPage(1);
-          cd.style.cursor = "pointer";
-        } else {
-          const minutes = Math.floor(distance / 60000);
-          const seconds = Math.floor((distance % 60000) / 1000);
-          cd.textContent = `${minutes}m ${seconds}s`;
-        }
-      }, 1000);
-    }
-
-    updateCountdown();
   </script>
 </body>
 </html>
