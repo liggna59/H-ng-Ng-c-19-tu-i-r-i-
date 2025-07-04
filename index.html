@@ -189,7 +189,6 @@
       "Tận hưởng đi vì nốt năm nữa U30 rồi đó :D"
     ];
 
-    let teaseCount = 0;
     function teaseClick() {
       const texts = [
         "😏 Nhấn tiếp nữa đi 😏",
@@ -206,11 +205,13 @@
         playMusic();
       }
     }
+    window.teaseClick = teaseClick;
 
     function nextPage(n) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('show'));
       document.getElementById(`page${n}`).classList.add('show');
     }
+    window.nextPage = nextPage;
 
     function playMusic() {
       const audio = document.getElementById('bg-music');
@@ -298,6 +299,8 @@
 
     setInterval(createFirework, 2000);
     animate();
+
+    let teaseCount = 0;
   </script>
 </body>
 </html>
