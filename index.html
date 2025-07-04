@@ -112,6 +112,20 @@
       box-shadow: 0 0 10px white;
     }
 
+    #music-toggle {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      z-index: 10;
+    }
+
     .page {
       position: absolute;
       top: 0; left: 0;
@@ -136,6 +150,8 @@
     <source src="be-friend-forever.mp3" type="audio/mp3">
   </audio>
 
+  <button id="music-toggle" onclick="toggleMusic()">🔊 Tắt nhạc</button>
+
   <div class="page show" id="page0">
     <div id="countdown">Đang tính thời gian...</div>
   </div>
@@ -158,9 +174,15 @@
   <canvas class="firework" id="fireworks"></canvas>
 
   <script>
-    const storedBlessings = [...document.querySelectorAll('#blessing-box p')].map(p => p.textContent);
-    storedBlessings.length = 0;
-    storedBlessings.push(
+    let isMuted = false;
+    function toggleMusic() {
+      const audio = document.getElementById('bg-music');
+      isMuted = !isMuted;
+      audio.muted = isMuted;
+      document.getElementById('music-toggle').textContent = isMuted ? '🔇 Bật nhạc' : '🔊 Tắt nhạc';
+    }
+
+    const storedBlessings = [
       "Hôm nay trời xanh mây trắng nắng vàng, là sn của HN🎉",
       "19 tuổi rồi đó, nhanh thế (vẫn đang tự thấy shock)💜",
       "Chúc HN thiệt nhiều niềm vui, hạnh phúc và yêu thương",
@@ -194,7 +216,7 @@
       "Chờ khi nào giỏi hơn sẽ thử làm tý IOT :>>",
       "May your days be filled with joy and your nights with gentle dreams",
       "Tận hưởng đi vì nốt năm nữa U30 rồi đó :D"
-    );
+    ];
 
     let currentLine = 0;
     function startTyping() {
