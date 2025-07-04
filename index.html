@@ -11,7 +11,6 @@
       overflow: hidden;
       font-family: 'Dancing Script', cursive;
     }
-
     #background {
       position: fixed;
       top: 0;
@@ -24,13 +23,11 @@
       animation: animateBg 15s infinite linear;
       filter: brightness(0.9) contrast(1.1);
     }
-
     @keyframes animateBg {
       0% { background-position: 0% 0%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 0%; }
     }
-
     .btn {
       padding: 12px 24px;
       font-size: 16px;
@@ -41,27 +38,18 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-
-    .btn:hover {
-      background-color: #7c3aed;
-    }
-
+    .btn:hover { background-color: #7c3aed; }
     .page {
       position: absolute;
       top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100vw; height: 100vh;
       display: none;
       justify-content: center;
       align-items: center;
       flex-direction: column;
       text-align: center;
     }
-
-    .page.show {
-      display: flex;
-    }
-
+    .page.show { display: flex; }
     #countdown {
       font-family: 'Courier New', monospace;
       font-size: 36px;
@@ -72,45 +60,36 @@
       margin-bottom: 20px;
       box-shadow: 0 0 10px white;
     }
-
     .bling {
       position: fixed;
-      width: 6px;
-      height: 6px;
+      width: 6px; height: 6px;
       background: white;
       border-radius: 50%;
       box-shadow: 0 0 8px white;
       animation: blink 2s infinite ease-in-out;
       z-index: -1;
     }
-
     @keyframes blink {
       0%, 100% { opacity: 0.1; transform: scale(0.8); }
       50% { opacity: 1; transform: scale(1.4); }
     }
-
     .falling {
       position: fixed;
       font-size: 20px;
       animation: fall linear infinite;
       z-index: 0;
     }
-
     @keyframes fall {
       0% { transform: translateY(-100px); opacity: 1; }
       100% { transform: translateY(110vh); opacity: 0; }
     }
-
     .firework {
       position: fixed;
       pointer-events: none;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
       z-index: 1;
     }
-
     #audio-toggle {
       position: fixed;
       top: 20px;
@@ -123,6 +102,13 @@
       border-radius: 10px;
       font-size: 16px;
       cursor: pointer;
+    }
+    .title {
+      font-size: 36px;
+      margin-bottom: 40px;
+      text-align: center;
+      position: relative;
+      top: -20px;
     }
   </style>
 </head>
@@ -154,6 +140,7 @@
   </div>
 
   <script>
+    const SIMULATE_TIME = false; // Đặt = true để test đếm ngược (bằng cách giả lập thời gian đã tới)
     const blessingLines = [
       "Hôm nay trời xanh mây trắng nắng vàng, là sn của HN🎉",
       "19 tuổi rồi đó, nhanh thế (vẫn đang tự thấy shock)💜",
@@ -190,6 +177,29 @@
       "Tận hưởng đi vì nốt năm nữa U30 rồi đó :D"
     ];
 
+    const teaseLines = [
+      "😏 Hnhu bị lỗi rồi đó, tiếp đi 😏",
+      "🙄 Thấy cũng cũng rồi đó, chắc do non tay load hơi lâu 🙄",
+      "😝 Ơ còn à, chắc lần cuối rồi đó,  chắc chắn😝",
+      "🤭 Hãy sống kiên nhẫn lên nèo, kiên nhẫn là tốt 🤭",
+      "🥳 Roài thôi không thách thức nữa, để chuyển qua nội dung chính 🥳",
+      "🤣 Hnhu ctrinh lỗi rồi, chết rồi biết lsao đâyyyy🤣",
+      "😜 Chờ tý đi, đang sửa nốt, chắc vậy (hoặc thách thức lòng kiên nhẫn) 😜",
+      "🥰 Đến đc tận đây rồi cũng tốt đó, hê hê, ncl không đùa nữa đâu, chơi thật này",
+      "😇 Lần này legit nha, ko troll nữa, nhấn cái là sang luôn 😇"
+    ];
+
+    let teaseCount = 0;
+    function teaseClick() {
+      document.getElementById("teaseText").innerText = teaseLines[teaseCount] || "😇 Nhấn nữa là sang trang nè";
+      teaseCount++;
+      if (teaseCount === teaseLines.length) {
+        nextPage(3);
+        startTyping();
+        playMusic();
+      }
+    }
+
     function startTyping() {
       const box = document.getElementById("blessing-box");
       let currentLine = 0;
@@ -211,29 +221,6 @@
         }, 40);
       }
       typeLine();
-    }
-
-    const teaseLines = [
-      "😏 Hnhu bị lỗi rồi đó, tiếp đi 😏",
-      "🙄 Thấy cũng cũng rồi đó, chắc do non tay load hơi lâu 🙄",
-      "😝 Ơ còn à, chắc lần cuối rồi đó,  chắc chắn😝",
-      "🤭 Hãy sống kiên nhẫn lên nèo, kiên nhẫn là tốt, là liều thuốc cho sức khỏe và tinh thần chạy deadline 🤭",
-      "🥳 Roài thôi không thách thức nữa, để chuyển qua ndung chính 🥳",
-      "🤣 Hnhu ctrinh lỗi rồi, chết rồi biết lsao đâyyyy🤣",
-      "😜 Chờ tý đi, đang sửa nốt, chắc vậy (hoặc thách thức lòng kiên nhẫn) 😜",
-      "🥰 Đến đc tận đây rồi cũng tốt đó, hê hê, ncl không đùa nữa đâu, chơi thật này",
-      "😇 Lần này legit nha, ko troll troll nữa, ko nhấn là tiếc"
-    ];
-
-    let teaseCount = 0;
-    function teaseClick() {
-      document.getElementById("teaseText").innerText = teaseLines[teaseCount] || "😇 Nhấn nữa là sang trang nè";
-      teaseCount++;
-      if (teaseCount === teaseLines.length) {
-        nextPage(3);
-        startTyping();
-        playMusic();
-      }
     }
 
     function nextPage(n) {
@@ -265,7 +252,7 @@
     };
 
     function updateCountdown() {
-      const targetDate = new Date().getTime() + 10000; // 10 giây để test
+      const targetDate = SIMULATE_TIME ? new Date().getTime() - 1000 : new Date("2025-07-06T00:00:00").getTime();
       const cd = document.getElementById("countdown");
       const interval = setInterval(() => {
         const now = new Date().getTime();
@@ -276,11 +263,16 @@
           cd.onclick = () => nextPage(1);
           cd.style.cursor = "pointer";
         } else {
-          const seconds = Math.floor(distance / 1000);
-          cd.textContent = `${seconds}s`;
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          cd.textContent = `${days} ngày ${hours} giờ ${minutes} phút ${seconds} giây`;
         }
       }, 1000);
     }
+
+    updateCountdown();
 
     for (let i = 0; i < 80; i++) {
       const sparkle = document.createElement('div');
@@ -357,7 +349,6 @@
 
     setInterval(createFirework, 2000);
     animate();
-    updateCountdown();
   </script>
 </body>
 </html>
