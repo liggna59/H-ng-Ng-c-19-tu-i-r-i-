@@ -158,8 +158,9 @@
   <canvas class="firework" id="fireworks"></canvas>
 
   <script>
-    const blessingLines = [...document.querySelectorAll('#blessing-box p')].map(p => p.textContent);
-    const storedBlessings = [
+    const storedBlessings = [...document.querySelectorAll('#blessing-box p')].map(p => p.textContent);
+    storedBlessings.length = 0;
+    storedBlessings.push(
       "Hôm nay trời xanh mây trắng nắng vàng, là sn của HN🎉",
       "19 tuổi rồi đó, nhanh thế (vẫn đang tự thấy shock)💜",
       "Chúc HN thiệt nhiều niềm vui, hạnh phúc và yêu thương",
@@ -193,7 +194,7 @@
       "Chờ khi nào giỏi hơn sẽ thử làm tý IOT :>>",
       "May your days be filled with joy and your nights with gentle dreams",
       "Tận hưởng đi vì nốt năm nữa U30 rồi đó :D"
-    ];
+    );
 
     let currentLine = 0;
     function startTyping() {
@@ -260,24 +261,26 @@
     }
 
     function updateCountdown() {
-      const targetDate = new Date("2025-07-06T00:00:00").getTime();
-      const now = new Date().getTime();
-      const distance = targetDate - now;
+      const targetDate = new Date().getTime() + 60000; // 1 phút đếm ngược
       const cd = document.getElementById("countdown");
-      if (distance <= 0) {
-        cd.textContent = "🎉 Đến ngày sinh nhật rồi nè! Nhấn để tiếp tục 🎉";
-        cd.onclick = () => nextPage(1);
-        cd.style.cursor = "pointer";
-        return;
-      }
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      cd.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+      const interval = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+        if (distance <= 0) {
+          clearInterval(interval);
+          cd.textContent = "🎉 Hết giờ! Nhấn để bắt đầu 🎉";
+          cd.onclick = () => nextPage(1);
+          cd.style.cursor = "pointer";
+        } else {
+          const minutes = Math.floor(distance / 60000);
+          const seconds = Math.floor((distance % 60000) / 1000);
+          cd.textContent = `${minutes}m ${seconds}s`;
+        }
+      }, 1000);
     }
+
     updateCountdown();
-    setInterval(updateCountdown, 1000);
   </script>
 </body>
 </html>
