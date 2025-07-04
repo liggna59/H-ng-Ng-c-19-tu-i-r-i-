@@ -183,7 +183,7 @@
     }
 
     function updateCountdown() {
-      const targetDate = new Date('2025-07-06T00:00:00').getTime();
+      const targetDate = new Date().getTime() + 30000; // 30 giây đếm ngược
       const cd = document.getElementById("countdown");
       const interval = setInterval(() => {
         const now = new Date().getTime();
@@ -194,9 +194,8 @@
           cd.onclick = () => nextPage(1);
           cd.style.cursor = "pointer";
         } else {
-          const minutes = Math.floor(distance / 60000);
-          const seconds = Math.floor((distance % 60000) / 1000);
-          cd.textContent = `${minutes}m ${seconds}s`;
+          const seconds = Math.floor(distance / 1000);
+          cd.textContent = `00m ${seconds}s`;
         }
       }, 1000);
     }
@@ -213,17 +212,6 @@
       "🥰 Đến đc tận đây rồi cũng tốt đó, hê hê, ncl không đùa nữa đâu, chơi thật này",
       "😇 Lần này legit nha, ko troll troll nữa, ko nhấn là tiếc"
     ];
-
-    let teaseCount = 0;
-    function teaseClick() {
-      document.getElementById("teaseText").innerText = teaseLines[teaseCount];
-      teaseCount++;
-      if (teaseCount === teaseLines.length) {
-        nextPage(3);
-        startTyping();
-        playMusic();
-      }
-    }
 
     const blessings = [
       "Hôm nay trời xanh mây trắng nắng vàng, là sn của HN🎉",
@@ -260,6 +248,17 @@
       "May your days be filled with joy and your nights with gentle dreams",
       "Tận hưởng đi vì nốt năm nữa U30 rồi đó :D"
     ];
+
+    let teaseCount = 0;
+    function teaseClick() {
+      document.getElementById("teaseText").innerText = teaseLines[teaseCount];
+      teaseCount++;
+      if (teaseCount === teaseLines.length) {
+        nextPage(3);
+        startTyping();
+        playMusic();
+      }
+    }
 
     let currentLine = 0;
     function startTyping() {
