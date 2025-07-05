@@ -235,20 +235,40 @@
       "May your days be filled with joy and your nights with gentle dreams",
       "Tận hưởng đi vì nốt năm nữa U30 rồi đó :D"
     ];
-  function startBlessing() {
-    const box = document.getElementById('blessing-box');
-    let i = 0;
-    function showNext() {
-      if (i < blessings.length) {
-        const p = document.createElement('p');
-        p.innerText = blessings[i];
-        box.appendChild(p);
-        i++;
-        setTimeout(showNext, 1500);
+ function startBlessing() {
+  const box = document.getElementById('blessing-box');
+  let i = 0;
+
+  function typeLine(line, callback) {
+    const p = document.createElement('p');
+    p.style.margin = '10px 0';
+    p.style.fontSize = '20px';
+    p.style.color = '#fff';
+    p.style.textAlign = 'center';
+    box.appendChild(p);
+
+    let j = 0;
+    function typeChar() {
+      if (j < line.length) {
+        p.innerHTML += line[j];
+        j++;
+        setTimeout(typeChar, 40);  // tốc độ đánh máy
+      } else if (callback) {
+        setTimeout(callback, 500); // delay giữa các dòng
       }
     }
-    showNext();
+    typeChar();
   }
+
+  function showNextLine() {
+    if (i < blessingLines.length) {
+      typeLine(blessingLines[i], showNextLine);
+      i++;
+    }
+  }
+
+  showNextLine();
+}
 
   function updateCountdown() {
     const now = new Date();
