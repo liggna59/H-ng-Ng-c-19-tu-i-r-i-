@@ -248,38 +248,6 @@ function startBlessing() {
     p.style.color = '#fff';
     p.style.textAlign = 'center';
     p.style.opacity = '0';
-    p.style.transition = 'opacity 0.5s';
-    box.innerHTML = '';  // Xoá dòng cũ trước khi hiện dòng mới
-    box.appendChild(p);
-
-    let j = 0;
-    function typeChar() {
-      if (j === 0) p.style.opacity = '1';  // hiện dần khi bắt đầu gõ
-      if (j < line.length) {
-        p.innerHTML += line[j];
-        j++;
-        setTimeout(typeChar, 40);
-      } else if (callback) {
-        setTimeout(() => {
-          p.style.opacity = '0';  // Ẩn dần dòng chữ
-          setTimeout(callback, 600); // đợi ẩn xong rồi mới hiện dòng sau
-        }, 1800); // thời gian hiển thị dòng chữ trước khi biến mất
-      }
-    }
-    typeChar();
-  }
-
-  function startBlessing() {
-  const box = document.getElementById('blessing-box');
-  let i = 0;
-
-  function typeLine(line, callback) {
-    const p = document.createElement('p');
-    p.style.margin = '10px 0';
-    p.style.fontSize = '20px';
-    p.style.color = '#fff';
-    p.style.textAlign = 'center';
-    p.style.opacity = '0';
     p.style.transition = 'opacity 0.4s ease';
 
     box.innerHTML = ''; // ❗ Xoá dòng cũ trước khi hiển thị dòng mới
