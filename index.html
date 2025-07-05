@@ -203,16 +203,16 @@
   }
 
    const blessingLines = [
-      "Hôm nay trời xanh mây trắng nắng vàng, là sn của HN🎉",
-      "19 tuổi rồi đó, nhanh thế (vẫn đang tự thấy shock)💜",
+      "Hôm nay trời xanh mây trắng nắng vàng, là sn của HN đó🎉",
+      "19 tuổi rồi đó, nhanh thế (ê vẫn đang tự thấy shock vì quá nhanh)",
       "Chúc HN thiệt nhiều niềm vui, hạnh phúc và yêu thương",
       "Luôn dịu dàng, nhưng cũng mạnh mẽ khi cần nha",
-      "Bạn là một người đặc biệt – với chính bạn và với mình nữa",
-      "Mong bạn luôn sống thật với lòng mình, không cần gồng gánh quá nhiều nữa",
+      "HN là một người đặc biệt – với chính bạn và với mình nữa",
+      "Mong bạn mình luôn sống thật với lòng mình, không cần gồng gánh quá nhiều nữa",
       "Cười nhiều hơn nữa, vui nhiều chút",
       "Ờm vẫn chịu được tính sáng nắng chiều mưa tối hên xui của mình",
       "Xin kảm ơn",
-      "Dù mình không ở gần – nhưng mà yên tâm, vẫn nhớ HN",
+      "Dù cta không ở gần – nhưng mà yên tâm, vẫn nhớ HN",
       "Thật sự may mắn vì gặp đc HN :>>>",
       "Lâu lâu thấy như mẹ thật -.-",
       "Nhưng mà do đó chắc chắn HN là duy nhất :D thân nhất",
@@ -269,6 +269,41 @@ function startBlessing() {
     typeChar();
   }
 
+  function startBlessing() {
+  const box = document.getElementById('blessing-box');
+  let i = 0;
+
+  function typeLine(line, callback) {
+    const p = document.createElement('p');
+    p.style.margin = '10px 0';
+    p.style.fontSize = '20px';
+    p.style.color = '#fff';
+    p.style.textAlign = 'center';
+    p.style.opacity = '0';
+    p.style.transition = 'opacity 0.4s ease';
+
+    box.innerHTML = ''; // ❗ Xoá dòng cũ trước khi hiển thị dòng mới
+    box.appendChild(p);
+
+    let j = 0;
+    function typeChar() {
+      if (j === 0) p.style.opacity = '1';
+      if (j < line.length) {
+        p.textContent += line[j];
+        j++;
+        setTimeout(typeChar, 40);  // tốc độ đánh máy
+      } else {
+        // Đợi một chút rồi làm dòng mờ dần và gọi tiếp
+        setTimeout(() => {
+          p.style.opacity = '0'; // ẩn dòng
+          setTimeout(callback, 500); // gọi dòng sau khi dòng cũ mờ đi
+        }, 1800); // giữ dòng hiện 1.8s
+      }
+    }
+
+    typeChar();
+  }
+
   function showNextLine() {
     if (i < blessingLines.length) {
       typeLine(blessingLines[i], showNextLine);
@@ -278,6 +313,7 @@ function startBlessing() {
 
   showNextLine();
 }
+
   function updateCountdown() {
     const now = new Date();
     const nextBirthday = new Date(now.getFullYear() + 1, 6, 5);
