@@ -193,11 +193,13 @@
     if (clickCount <= text.length) {
       teaseText.innerText = text[clickCount - 1];
     }
-    if (clickCount >= 9) {
-      nextPage(3);
-      startBlessing();
-      startFireworks();
-    }
+ if (clickCount >= 9) {
+  nextPage(3);
+  setTimeout(() => {
+    startBlessing(); // Gọi sau khi page 3 đã hiện xong
+  }, 800);
+  startFireworks();
+}
   }
 
    const blessingLines = [
