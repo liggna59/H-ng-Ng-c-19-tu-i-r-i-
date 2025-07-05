@@ -10,27 +10,29 @@
       padding: 0;
       overflow: hidden;
       font-family: 'Dancing Script', cursive;
+      background: linear-gradient(135deg, #e0bbf7, #c2e4ff);
     }
-
-    #background {
-      position: fixed;
-      top: 0;
-      left: 0;
+    .page {
+      position: absolute;
+      top: 0; left: 0;
       width: 100vw;
       height: 100vh;
-      background: url('bg.png') no-repeat center center fixed;
-      background-size: cover;
-      z-index: -2;
-      animation: animateBg 15s infinite linear;
-      filter: brightness(0.9) contrast(1.1);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      transition: opacity 1s ease;
     }
-
-    @keyframes animateBg {
-      0% { background-position: 0% 0%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 0%; }
+    .page.show {
+      display: flex;
+      opacity: 1;
     }
-
+    .fade-out {
+      animation: fadeOut 1s forwards;
+    }
+    @keyframes fadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
     .btn {
       padding: 12px 24px;
       font-size: 16px;
@@ -41,131 +43,118 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-
     .btn:hover {
       background-color: #7c3aed;
     }
-
-    .page {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
+    @keyframes fall {
+      0% { transform: translateY(-100px); opacity: 1; }
+      100% { transform: translateY(110vh); opacity: 0; }
     }
-
-    .page.show {
-      display: flex;
-    }
-
-    #countdown {
-      font-family: 'Courier New', monospace;
-      font-size: 36px;
-      color: white;
-      background: black;
-      padding: 20px 40px;
-      border-radius: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 10px white;
-    }
-
-    .bling {
-      position: fixed;
-      width: 6px;
-      height: 6px;
-      background: white;
-      border-radius: 50%;
-      box-shadow: 0 0 8px white;
-      animation: blink 2s infinite ease-in-out;
-      z-index: -1;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 0.1; transform: scale(0.8); }
-      50% { opacity: 1; transform: scale(1.4); }
-    }
-
     .falling {
       position: fixed;
       font-size: 20px;
       animation: fall linear infinite;
       z-index: 0;
     }
-
-    @keyframes fall {
-      0% { transform: translateY(-100px); opacity: 1; }
-      100% { transform: translateY(110vh); opacity: 0; }
+    .star, .snow {
+      position: fixed;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: fall linear infinite;
     }
-
     .firework {
       position: fixed;
       pointer-events: none;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 1;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
     }
-
-    #audio-toggle {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      z-index: 9999;
-      background: rgba(0, 0, 0, 0.5);
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .title {
-      font-size: 36px;
-      margin-bottom: 40px;
+    #blessing-box p {
+      margin: 10px 0;
+      font-size: 20px;
       text-align: center;
-      position: relative;
-      top: -20px;
+      color: #333;
+    }
+    h2.title {
+      font-family: 'Arial', sans-serif;
+      font-size: 36px;
+      color: #ff4081;
+      margin: 10px;
     }
   </style>
 </head>
 <body>
-  <div id="background"></div>
-  <canvas class="firework" id="fireworks"></canvas>
-  <button id="audio-toggle">🔊 Bật/Tắt nhạc</button>
   <audio id="bg-music" loop>
     <source src="be-friend-forever.mp3" type="audio/mp3">
   </audio>
 
-  <div class="page show" id="page0">
-    <div id="countdown">Đang tính thời gian...</div>
-  </div>
-
-  <div class="page" id="page1">
-    <h2>🎂 19 tuổi rồi he, nhớ nhấn dô nè 🎂</h2>
-    <button class="btn" onclick="nextPage(2)">Bắt đầu nè</button>
+  <div class="page show" id="page1">
+    <h2>🎈 19 tuổi rồi hè! Nhấn vào đây nè 🎈</h2>
+    <button class="btn" onclick="nextPage(2)">Nhấn vào đây đi</button>
   </div>
 
   <div class="page" id="page2">
-    <h2 id="teaseText">😏 Hình như bị lỗi rồi đó, tiếp đi 😏</h2>
-    <button class="btn" onclick="teaseClick()">Ấn tiếp thử coi 🤭</button>
+    <h2 id="teaseText">😏 Tưởng thế là xong à, nhấn tiếp đi 😏</h2>
+    <button class="btn" onclick="teaseClick()">Nhấn tiếp</button>
   </div>
-
   <div class="page" id="page3">
-    <h2 class="title">🎂 HAPPY HAPPY HAPPY BIRTHDAY 🎂</h2>
-    <div id="blessing-box" style="max-width: 600px; margin: auto;"></div>
+    <img src="2dua.jpg" alt="Hai đứa mình 💕" style="width:300px; border-radius:12px; margin-bottom:20px;">
+    <h2 class="title">🎂 Chúc mừng sinh nhật Hồng Ngọc 🎂</h2>
+    <div id="blessing-box" style="max-width: 600px;"></div>
   </div>
 
-  <script>
-    const SIMULATE_TIME = true; // ✅ Đặt là true để test không cần đếm ngược
+  <canvas class="firework" id="fireworks"></canvas>
+<script>
+  function createFalling(symbol, duration) {
+    const el = document.createElement('div');
+    el.className = 'falling';
+    el.textContent = symbol;
+    el.style.left = Math.random() * 100 + "vw";
+    el.style.top = "-50px";
+    el.style.animationDuration = duration + "s";
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), duration * 1000);
+  }
+  setInterval(() => createFalling("🌸", 10 + Math.random() * 10), 700);
+  setInterval(() => createFalling("❄️", 10 + Math.random() * 10), 900);
+  setInterval(() => createFalling("⭐", 5 + Math.random() * 8), 500);
+</script>
+<script>
+  let teaseCount = 0;
+  function teaseClick() {
+    const text = ["😏 Nhấn tiếp nữa đi 😏", "🙄 Vẫn chưa xong đâu 🙄", "😝 Gần tới rồi 😝", "🤭 Lần cuối nha 🤭", "🥳 Ok vào nội dung chính nào! 🥳"];
+    document.getElementById("teaseText").innerText = text[teaseCount];
+    teaseCount++;
+    if (teaseCount === 5) {
+      nextPage(3);
+      startTyping();
+      playMusic();
+    }
+  }
 
-    const blessingLines = [
-      "Hôm nay trời xanh mây trắng nắng vàng, là sn của HN🎉",
+  function nextPage(n) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('show'));
+    document.getElementById(page${n}).classList.add('show');
+  }
+
+  function playMusic() {
+    const audio = document.getElementById('bg-music');
+    audio.volume = 0;
+    audio.play();
+    let vol = 0;
+    const fade = setInterval(() => {
+      vol += 0.05;
+      if (vol >= 1) clearInterval(fade);
+      audio.volume = Math.min(vol, 1);
+    }, 200);
+  }
+
+  const blessingLines = [
+    "Hôm nay trời xanh mây trắng nắng vàng, là sn của HN🎉",
       "19 tuổi rồi đó, nhanh thế (vẫn đang tự thấy shock)💜",
       "Chúc HN thiệt nhiều niềm vui, hạnh phúc và yêu thương",
       "Luôn dịu dàng, nhưng cũng mạnh mẽ khi cần nha",
@@ -197,188 +186,86 @@
       "Thông cảm người học lần đầu",
       "Chờ khi nào giỏi hơn sẽ thử làm tý IOT :>>",
       "May your days be filled with joy and your nights with gentle dreams",
-      "Tận hưởng đi vì nốt năm nữa U30 rồi đó :D"
-    ];
-
-    function startTyping() {
-      const box = document.getElementById("blessing-box");
-      let currentLine = 0;
-      function typeLine() {
-        if (currentLine >= blessingLines.length) return;
-        const p = document.createElement("p");
-        let text = blessingLines[currentLine];
-        let i = 0;
-        box.innerHTML = "";
-        box.appendChild(p);
-        const interval = setInterval(() => {
-          p.textContent += text[i];
-          i++;
-          if (i >= text.length) {
-            clearInterval(interval);
+    "Tận hưởng đi vì nốt năm nữa U30 rồi đó :D"
+  ];
+  let currentLine = 0;
+  function startTyping() {
+    const box = document.getElementById("blessing-box");
+    function typeLine() {
+      if (currentLine >= blessingLines.length) return;
+      let text = blessingLines[currentLine];
+      let i = 0;
+      const p = document.createElement("p");
+      box.innerHTML = "";
+      box.appendChild(p);
+      const interval = setInterval(() => {
+        p.textContent += text[i];
+        i++;
+        if (i >= text.length) {
+          clearInterval(interval);
+          setTimeout(() => {
             currentLine++;
-            setTimeout(typeLine, 2000);
-          }
-        }, 40);
-      }
-      typeLine();
+            typeLine();
+          }, 2000);
+        }
+      }, 40);
     }
+    typeLine();
+  }
 
-    const teaseLines = [
-      "😏 Hnhu bị lỗi rồi đó, tiếp đi 😏",
-      "🙄 Thấy cũng cũng rồi đó, chắc do non tay load hơi lâu 🙄",
-      "😝 Ơ còn à, chắc lần cuối rồi đó,  chắc chắn😝",
-      "🤭 Hãy sống kiên nhẫn lên nèo, kiên nhẫn là tốt, là liều thuốc cho sức khỏe và tinh thần chạy deadline 🤭",
-      "🥳 Roài thôi không thách thức nữa, để chuyển qua ndung chính 🥳",
-      "🤣 Hnhu ctrinh lỗi rồi, chết rồi biết lsao đâyyyy🤣",
-      "😜 Chờ tý đi, đang sửa nốt, chắc vậy (hoặc thách thức lòng kiên nhẫn) 😜",
-      "🥰 Đến đc tận đây rồi cũng tốt đó, hê hê, ncl không đùa nữa đâu, chơi thật này",
-      "😇 Lần này legit nha, ko troll troll nữa, ko nhấn là tiếc"
-    ];
+  // Đơn giản hóa pháo hoa
+  const canvas = document.getElementById("fireworks");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  let particles = [];
 
-    let teaseCount = 0;
-    function teaseClick() {
-      document.getElementById("teaseText").innerText = teaseLines[teaseCount] || "😇 Nhấn nữa là sang trang nè";
-      teaseCount++;
-      if (teaseCount === teaseLines.length) {
-        nextPage(3);
-        startTyping();
-        playMusic();
-      }
-    }
-
-    function nextPage(n) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('show'));
-      document.getElementById(`page${n}`).classList.add('show');
-    }
-
-    function playMusic() {
-      const audio = document.getElementById('bg-music');
-      audio.volume = 0;
-      audio.play();
-      let vol = 0;
-      const fade = setInterval(() => {
-        vol += 0.05;
-        if (vol >= 1) clearInterval(fade);
-        audio.volume = Math.min(vol, 1);
-      }, 200);
-    }
-
-    document.getElementById("audio-toggle").onclick = function () {
-      const audio = document.getElementById("bg-music");
-      if (audio.paused) {
-        audio.play();
-        this.textContent = "🔊 Bật/Tắt nhạc";
-      } else {
-        audio.pause();
-        this.textContent = "🔇 Đã tắt nhạc";
+  function FireworkParticle(x, y, color) {
+    return {
+      x, y,
+      radius: 2,
+      color,
+      angle: Math.random() * 2 * Math.PI,
+      speed: Math.random() * 5 + 2,
+      alpha: 1,
+      update() {
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed + 1;
+        this.alpha -= 0.01;
+      },
+      draw() {
+        ctx.globalAlpha = this.alpha;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
       }
     };
+  }
 
-    function updateCountdown() {
-      const targetDate = new Date("2025-07-06T00:00:00").getTime();
-      const cd = document.getElementById("countdown");
-
-      if (SIMULATE_TIME) {
-        cd.textContent = "🎉 Hết giờ! Nhấn để bắt đầu 🎉";
-        cd.onclick = () => nextPage(1);
-        cd.style.cursor = "pointer";
-        return;
-      }
-
-      const interval = setInterval(() => {
-        const now = new Date().getTime();
-        const distance = targetDate - now;
-        if (distance <= 0) {
-          clearInterval(interval);
-          cd.textContent = "🎉 Hết giờ! Nhấn để bắt đầu 🎉";
-          cd.onclick = () => nextPage(1);
-          cd.style.cursor = "pointer";
-        } else {
-          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-          cd.textContent = `${days} ngày ${hours} giờ ${minutes} phút ${seconds} giây`;
-        }
-      }, 1000);
+  function createFirework() {
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height / 2;
+    const color = hsl(${Math.random() * 360}, 100%, 70%);
+    for (let i = 0; i < 30; i++) {
+      particles.push(FireworkParticle(x, y, color));
     }
+  }
 
-    for (let i = 0; i < 80; i++) {
-      const sparkle = document.createElement('div');
-      sparkle.className = 'bling';
-      sparkle.style.left = Math.random() * 100 + 'vw';
-      sparkle.style.top = Math.random() * 100 + 'vh';
-      sparkle.style.animationDelay = (Math.random() * 4) + 's';
-      sparkle.style.opacity = Math.random();
-      document.body.appendChild(sparkle);
-    }
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((p, i) => {
+      p.update();
+      p.draw();
+      if (p.alpha <= 0) particles.splice(i, 1);
+    });
+    requestAnimationFrame(animate);
+  }
 
-    function createFalling(symbol, duration) {
-      const el = document.createElement('div');
-      el.className = 'falling';
-      el.textContent = symbol;
-      el.style.left = Math.random() * 100 + "vw";
-      el.style.top = "-50px";
-      el.style.animationDuration = duration + "s";
-      document.body.appendChild(el);
-      setTimeout(() => el.remove(), duration * 1000);
-    }
-
-    setInterval(() => createFalling("🌸", 10 + Math.random() * 10), 700);
-    setInterval(() => createFalling("❄️", 10 + Math.random() * 10), 900);
-    setInterval(() => createFalling("⭐", 5 + Math.random() * 8), 500);
-
-    const canvas = document.getElementById("fireworks");
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    let particles = [];
-
-    function FireworkParticle(x, y, color) {
-      return {
-        x, y,
-        radius: 2,
-        color,
-        angle: Math.random() * 2 * Math.PI,
-        speed: Math.random() * 5 + 2,
-        alpha: 1,
-        update() {
-          this.x += Math.cos(this.angle) * this.speed;
-          this.y += Math.sin(this.angle) * this.speed + 1;
-          this.alpha -= 0.01;
-        },
-        draw() {
-          ctx.globalAlpha = this.alpha;
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-          ctx.fillStyle = this.color;
-          ctx.fill();
-        }
-      };
-    }
-
-    function createFirework() {
-      const x = Math.random() * canvas.width;
-      const y = Math.random() * canvas.height / 2;
-      const color = `hsl(${Math.random() * 360}, 100%, 70%)`;
-      for (let i = 0; i < 30; i++) {
-        particles.push(FireworkParticle(x, y, color));
-      }
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((p, i) => {
-        p.update();
-        p.draw();
-        if (p.alpha <= 0) particles.splice(i, 1);
-      });
-      requestAnimationFrame(animate);
-    }
-
-    setInterval(createFirework, 2000);
-    animate();
-    updateCountdown();
-  </script>
+  setInterval(createFirework, 2000);
+  animate();
+</script>
 </body>
 </html>
+
+
